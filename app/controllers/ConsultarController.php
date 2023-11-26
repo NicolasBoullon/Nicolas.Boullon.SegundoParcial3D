@@ -14,12 +14,15 @@ class ConsultarController
         $id = (int)$parametros['id'];
         $tipoDeCuenta = $parametros['tipoDeCuenta'];
         $arrayCuentas = Cuenta::obtenerTodasCuentas();
-
+        
         foreach ($arrayCuentas as $value) 
         {
             if($value->tipoDeCuenta == $tipoDeCuenta && $value->id == $id)
             {
-                $payload = json_encode(array("Aviso!" => "Se encontro la cuenta solicitada."));
+                $saldoCuenta = $value->saldo;
+                $nombre = $value->nombre;
+                $apellido = $value->apellido;
+                $payload = json_encode(array("Aviso!" => "Se encontro la cuenta solicitada. Tipo de cuenta: $tipoDeCuenta - Saldo: $saldoCuenta - Nombre: $nombre $apellido"));
                 $response->getBody()->write($payload);
                 return $response;       
             }

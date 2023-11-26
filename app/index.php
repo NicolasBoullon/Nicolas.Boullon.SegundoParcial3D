@@ -37,6 +37,10 @@ $app->group('/cuenta', function (RouteCollectorProxy $group)
     // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');
 });
 
+$app->post('/depositar', DepositoController::class . ':DepositarCuenta')
+    ->add(\ValidarMiddleware::class . ':VerificarDatosDeposito')
+    ->add(\ValidarMiddleware::class . ':VerificarCuenta');
+
 $app->group('/consultas', function (RouteCollectorProxy $group)
 {
     $group->post('/consultarCuenta', ConsultarController::class . ':ConsultarCuenta');

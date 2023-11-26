@@ -38,4 +38,57 @@ class ValidarMiddleware
         return $response->withHeader('Content-Type','application/json');
     }
 
+    public static function VerificarCuenta(Request $request, RequestHandler $handler): Response
+    {
+        $parametros = $request->getParsedBody();
+        $id = $parametros['id'];
+        $tipoDeCuenta = $parametros['tipoDeCuenta'];
+        $e = false;
+        $arrayCuentas = Cuenta::obtenerTodasCuentas();
+        try{
+            foreach ($arrayCuentas as $value) 
+            {
+                if($value->tipoDeCuenta == $tipoDeCuenta && $value->id == $id)
+                {
+                    $e = true;
+                    $response = $handler->handle($request);    
+                }
+            }
+
+            if(!$e)
+            {
+                throw new Exception();
+            }
+        }
+        catch(Exception $e){
+            $response = new Response();
+            $payload = json_encode(array('AVISO!' => 'Error con los datos de cuenta ingresados'));
+            $response->getBody()->write($payload);
+        }
+
+        return $response->withHeader('Content-Type','application/json');
+    }
+
+    public static function VerificarDatosDeposito(Request $request, RequestHandler $handler): Response{
+ 
+        $parametros = $request->getParsedBody();
+
+        $importeADepositar = $parametros['importeDepositar'];
+        try{
+            if($importeADepositar > 0)
+            {
+                $response = $handler->handle($request);
+            }
+            else{
+                throw new Exception();
+            }
+        } catch(Exception $e){
+            $response = new Response();
+            $payload = json_encode(array('AVISO!' => 'El deposito debe ser mayor a 0'));
+            $response->getBody()->write($payload);
+        }
+        
+        return $response->withHeader('Content-Type','application/json');
+    }
+
 }

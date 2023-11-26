@@ -38,6 +38,16 @@ class Cuenta
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Cuenta'); // esto lo q hace es parsearlo a un tipo objeto
     }
 
+    public static function obtenerSaldoExistente($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT saldo FROM tabla_cuentas WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $saldo = $consulta->fetchColumn();
+        return $saldo;
+    }
     
     public static function darDeAltaCuenta($id)
     {

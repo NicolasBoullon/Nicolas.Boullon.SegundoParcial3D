@@ -66,28 +66,28 @@ class CuentaController{
     //     return $response->withHeader('Content-Type', 'application/json');
     // }
     
-    // public function AltaMesa($request,$response,$args)
-    // {
-    //     $parametros = $request->getParsedBody();
-    //     $id = $parametros['id'];
+    public function AltaCuenta($request,$response,$args)
+    {
+        $parametros = $request->getParsedBody();
+        $id = $parametros['id'];
     
-    //     Mesa::darDeAltaMesa($id);
-    //     $payload = json_encode(array('Aviso!'=> 'Se ha dado de alta la mesa'));
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+        Cuenta::darDeAltaCuenta($id);
+        $payload = json_encode(array('Aviso!'=> 'Se ha dado de alta la cuenta'));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
     
-    // public function BajaMesa($request,$response,$args)
-    // {
-    //     $parametros = $request->getBody();
-    //     $param = json_decode($parametros);
-    //     $id = $param->id;
+    public function BajaCuenta($request,$response,$args)
+    {
+        $parametros = $request->getBody();
+        $param = json_decode($parametros);
+        $id = $param->id;
     
-    //     Mesa::darDeBajaMesa($id);
-    //     $payload = json_encode(array('Aviso!' => 'Se ha dado de baja la mesa'));
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
+        Cuenta::darDeBajaCuenta($id);
+        $payload = json_encode(array('Aviso!' => 'Se ha dado de baja la cuenta'));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
     
     // public function ModificarMesa($request,$response,$args)
     // {

@@ -32,8 +32,8 @@ $app->group('/cuenta', function (RouteCollectorProxy $group)
 {
     $group->post('/crearCuenta', CuentaController::class . ':CargarCuenta')
     ->add(\ValidarMiddleware::class . ':validarParametrosCuenta');
-    // $group->post('/altaProducto', CuentaController::class . ':AltaProducto');
-    // $group->delete('/bajaProducto', CuentaController::class . ':BajaProducto');
+    $group->post('/altaCuenta', CuentaController::class . ':AltaCuenta');
+    $group->delete('/bajaCuenta', CuentaController::class . ':BajaCuenta');
     // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');
 });
 

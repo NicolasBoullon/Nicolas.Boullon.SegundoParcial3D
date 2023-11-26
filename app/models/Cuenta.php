@@ -28,7 +28,7 @@ class Cuenta
         $consulta->bindValue(':email', $this->email, PDO::PARAM_STR);
         $consulta->execute();
     }  
-    
+
     public static function obtenerTodasCuentas()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -37,6 +37,25 @@ class Cuenta
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Cuenta'); // esto lo q hace es parsearlo a un tipo objeto
     }
+
+    
+    public static function darDeAltaCuenta($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE tabla_cuentas SET estado = 1 WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+    public static function darDeBajaCuenta($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE tabla_cuentas SET estado = 0 WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+
 
     public static function ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,$saldo)
     {
@@ -87,7 +106,4 @@ class Cuenta
         return $todoOk;
         
     }
-
-
-
 }

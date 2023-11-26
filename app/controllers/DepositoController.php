@@ -7,6 +7,16 @@ class DepositoController
 {
 
 
+    public function CargarDeposito($request,$response,$args)
+    {
+
+        // public $id;
+        // public $idCuenta; //numeroDeCuenta
+        // public $tipoDeCuenta;
+        // public $importeDeposito;
+        // public $fechaDeposito;
+    }
+
     public function DepositarCuenta($request,$response,$args)
     {
         $parametros = $request->getParsedBody();
@@ -16,6 +26,13 @@ class DepositoController
         $saldoADepositar = $parametros['importeDepositar'];
         $saldoAcumulado = 0;
         $saldoExistente = Cuenta::obtenerSaldoExistente($id);
+
+        $deposito = new Deposito();
+        $deposito->idCuenta = $id;
+        $deposito->tipoDeCuenta = $tipoDeCuenta;
+        $deposito->importeDeposito = $saldoADepositar;
+
+        $deposito->crearDeposito();
 
         $saldoAcumulado = $saldoADepositar + $saldoExistente;
 

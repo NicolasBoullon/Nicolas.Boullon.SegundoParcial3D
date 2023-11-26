@@ -43,7 +43,7 @@ $app->group('/movimientos', function (RouteCollectorProxy $group)
         ->add(\ValidarMiddleware::class . ':VerificarDatosDeposito');
        
     $group->post('/retirar', RetiroController::class . ':RetirarCuenta')
-    ->add(\ValidarMiddleware::class . ':VerificarDatosRetiro');
+        ->add(\ValidarMiddleware::class . ':VerificarDatosRetiro');
 
 })->add(\ValidarMiddleware::class . ':VerificarCuenta');
 

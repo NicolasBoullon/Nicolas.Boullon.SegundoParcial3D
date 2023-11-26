@@ -12,9 +12,9 @@ class CuentaController{
         $apellido = $parametros['apellido'];
         $tipoDeDocumento = $parametros['tipoDeDocumento'];
         $numeroDeDocumento = $parametros['numeroDeDocumento'];
-        $email = $parametros['email'];
         $tipoDeCuenta = $parametros['tipoDeCuenta'];
         $saldo = $parametros['saldo'];
+        $email = $parametros['email'];
     
         $cuenta = new Cuenta();
         $cuenta->nombre = $nombre;
@@ -22,8 +22,8 @@ class CuentaController{
         $cuenta->tipoDeDocumento = $tipoDeDocumento;
         $cuenta->numeroDeDocumento = $numeroDeDocumento;
         $cuenta->tipoDeCuenta = $tipoDeCuenta;
-        $cuenta->email = $email;
         $cuenta->saldo = $saldo;
+        $cuenta->email = $email;
     
         $cuenta->crearCuenta();
         $payload = json_encode(array("mensaje" => "Cuenta creada con exito"));

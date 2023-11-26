@@ -15,6 +15,7 @@ require_once './controllers/DepositoController.php';
 require_once './controllers/AjusteController.php';
 require_once './controllers/RetiroController.php';
 
+require_once './middleware/ValidarMiddleware.php';
 
 $app = AppFactory::create();
 
@@ -29,7 +30,8 @@ $app->get('/', function($request, $response, array $args)
 
 $app->group('/cuenta', function (RouteCollectorProxy $group)
 {
-    $group->post('/crearCuenta', CuentaController::class . ':CargarCuenta');
+    $group->post('/crearCuenta', CuentaController::class . ':CargarCuenta')
+    ->add(\ValidarMiddleware::class . ':validarParametrosCuenta');
     // $group->post('/altaProducto', CuentaController::class . ':AltaProducto');
     // $group->delete('/bajaProducto', CuentaController::class . ':BajaProducto');
     // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');

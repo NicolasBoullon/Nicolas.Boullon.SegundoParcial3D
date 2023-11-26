@@ -37,4 +37,14 @@ $app->group('/cuenta', function (RouteCollectorProxy $group)
     // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');
 });
 
+$app->group('/consultas', function (RouteCollectorProxy $group)
+{
+    $group->post('/consultarCuenta', ConsultarController::class . ':ConsultarCuenta');
+    
+
+});
+
+
+
+
 $app->run();

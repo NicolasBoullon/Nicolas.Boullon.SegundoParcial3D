@@ -27,8 +27,16 @@ class Cuenta
         $consulta->bindValue(':saldo', $this->saldo, PDO::PARAM_STR);
         $consulta->bindValue(':email', $this->email, PDO::PARAM_STR);
         $consulta->execute();
-    }
+    }  
+    
+    public static function obtenerTodasCuentas()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre, apellido,tipoDeDocumento,numeroDeDocumento,tipoDeCuenta,saldo,email,estado FROM tabla_cuentas");
+        $consulta->execute();
 
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Cuenta'); // esto lo q hace es parsearlo a un tipo objeto
+    }
 
     public static function ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,$saldo)
     {

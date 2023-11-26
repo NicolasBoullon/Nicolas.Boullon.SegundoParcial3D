@@ -1,6 +1,7 @@
 <?php
 
-require_once "./models/Cuenta.php";
+require_once './models/Cuenta.php';
+require_once './db/AccesoDatos.php';
 
 class CuentaController{
 
@@ -13,7 +14,15 @@ class CuentaController{
         $tipoDeDocumento = $parametros['tipoDeDocumento'];
         $numeroDeDocumento = $parametros['numeroDeDocumento'];
         $tipoDeCuenta = $parametros['tipoDeCuenta'];
-        $saldo = $parametros['saldo'];
+        
+        if(isset($_POST['saldo']))
+        {
+            $saldo = $parametros['saldo'];
+        }
+        else
+        {
+            $saldo = 0;
+        }
         $email = $parametros['email'];
     
         $cuenta = new Cuenta();
@@ -26,6 +35,22 @@ class CuentaController{
         $cuenta->email = $email;
     
         $cuenta->crearCuenta();
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $ultimoID = $objAccesoDatos->obtenerUltimoId();
+        $archivo = $_FILES["archivo"]; 
+        $archivo["name"] = "$ultimoID-$tipoDeCuenta.jpg";
+        $nombre = $archivo["name"];
+        $carpeta = "./ImagenesDeCuenta/2023/";
+        if (!file_exists($carpeta)) {
+            if (!mkdir($carpeta, 0777, true)) {
+                echo json_encode(["Error" => "No se pudo crear la carpeta"]);
+                return;
+            }
+        }
+        $destino = "./ImagenesDeCuenta/2023/".$nombre;
+        move_uploaded_file($archivo["tmp_name"],$destino);
+
         $payload = json_encode(array("mensaje" => "Cuenta creada con exito"));
     
         $response->getBody()->write($payload);

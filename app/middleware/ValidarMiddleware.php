@@ -15,8 +15,15 @@ class ValidarMiddleware
         $tipoDeDocumento = $parametros['tipoDeDocumento'];
         $numeroDeDocumento = $parametros['numeroDeDocumento'];
         $tipoDeCuenta = $parametros['tipoDeCuenta'];
-        $saldo = $parametros['saldo'];
         $email = $parametros['email'];
+        if(isset($_POST['saldo']))
+        {
+            $saldo = $parametros['saldo'];
+        }
+        else
+        {
+            $saldo = 0;
+        }
 
         try{
 

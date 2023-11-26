@@ -7,15 +7,6 @@ class DepositoController
 {
 
 
-    public function CargarDeposito($request,$response,$args)
-    {
-
-        // public $id;
-        // public $idCuenta; //numeroDeCuenta
-        // public $tipoDeCuenta;
-        // public $importeDeposito;
-        // public $fechaDeposito;
-    }
 
     public function DepositarCuenta($request,$response,$args)
     {
@@ -38,7 +29,7 @@ class DepositoController
 
         Deposito::depositarSaldo($id,$saldoAcumulado);
 
-        $payload = json_encode(array('Aviso!' => 'Se ha realizado el deposito correctamente'));
+        $payload = json_encode(array('Aviso!' => "Se ha realizado el deposito correctamente. Saldo actual: $saldoAcumulado"));
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }

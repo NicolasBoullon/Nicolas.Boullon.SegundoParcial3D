@@ -73,7 +73,7 @@ class ValidarMiddleware
  
         $parametros = $request->getParsedBody();
 
-        $importeADepositar = $parametros['importeDepositar'];
+        $importeADepositar = (float)$parametros['importeDepositar'];
         try{
             if($importeADepositar > 0)
             {
@@ -85,6 +85,29 @@ class ValidarMiddleware
         } catch(Exception $e){
             $response = new Response();
             $payload = json_encode(array('AVISO!' => 'El deposito debe ser mayor a 0'));
+            $response->getBody()->write($payload);
+        }
+        
+        return $response->withHeader('Content-Type','application/json');
+    }
+
+    public static function VerificarDatosRetiro(Request $request, RequestHandler $handler): Response{
+ 
+        $parametros = $request->getParsedBody();
+
+        $importeARetirar = (float)$parametros['importeRetirar'];
+        
+        try{
+            if($importeARetirar > 0)
+            {
+                $response = $handler->handle($request);
+            }
+            else{
+                throw new Exception();
+            }
+        } catch(Exception $e){
+            $response = new Response();
+            $payload = json_encode(array('AVISO!' => 'El retiro debe ser mayor a 0'));
             $response->getBody()->write($payload);
         }
         

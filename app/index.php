@@ -37,9 +37,16 @@ $app->group('/cuenta', function (RouteCollectorProxy $group)
     // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');
 });
 
-$app->post('/depositar', DepositoController::class . ':DepositarCuenta')
-    ->add(\ValidarMiddleware::class . ':VerificarDatosDeposito')
-    ->add(\ValidarMiddleware::class . ':VerificarCuenta');
+$app->group('/movimientos', function (RouteCollectorProxy $group)
+{
+    $group->post('/depositar', DepositoController::class . ':DepositarCuenta')
+        ->add(\ValidarMiddleware::class . ':VerificarDatosDeposito');
+       
+    $group->post('/retirar', RetiroController::class . ':RetirarCuenta')
+    ->add(\ValidarMiddleware::class . ':VerificarDatosRetiro');
+
+})->add(\ValidarMiddleware::class . ':VerificarCuenta');
+
 
 $app->group('/consultas', function (RouteCollectorProxy $group)
 {

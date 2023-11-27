@@ -82,8 +82,43 @@ class CuentaController{
         $parametros = $request->getBody();
         $param = json_decode($parametros);
         $id = $param->id;
-    
+        $tipoDeCuenta = $param->tipoDeCuenta;
+        $e = FALSE;
+        $arrayCuentas = Cuenta::obtenerTodasCuentas();
+        foreach ($arrayCuentas as $value) 
+        {
+            if($value->tipoDeCuenta == $tipoDeCuenta && $value->id == $id)
+            {
+                $e = true;
+            }
+        }
+
+        if(!$e)
+        {
+            $payload = json_encode(array('Error!' => 'No hay ninguna cuenta con esos datos!'));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
         Cuenta::darDeBajaCuenta($id);
+
+        $carpeta = "./ImagenesBackupCuentas/2023/";
+                
+        if (!file_exists($carpeta)) {
+            if (!mkdir($carpeta, 0777, true)) {
+                echo json_encode(["Error" => "No se pudo crear la carpeta"]);
+                return;
+            }
+        }
+        
+        $nombreDeArchivo = "$id-$tipoDeCuenta.jpg";
+        $rutaOrigen = "./ImagenesDeCuenta/2023/" . $nombreDeArchivo;
+        $rutaDestino = "./ImagenesBackupCuentas/2023/" . $nombreDeArchivo;
+        if (rename($rutaOrigen, $rutaDestino)) {
+            echo json_encode(["Aviso" => "Se movio"]);
+        } else {
+            echo json_encode(["Error" => "No se movio"]);
+        }
         $payload = json_encode(array('Aviso!' => 'Se ha dado de baja la cuenta'));
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');

@@ -27,8 +27,14 @@ class ValidarMiddleware
 
         try{
 
-            Cuenta::ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,$saldo);
-            $response = $handler->handle($request);
+            if(Cuenta::ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,$saldo))
+            {
+                $response = $handler->handle($request);
+            }
+            else
+            {
+                throw new Exception();
+            }
 
         } catch(Exception $e){
             $response = new Response();

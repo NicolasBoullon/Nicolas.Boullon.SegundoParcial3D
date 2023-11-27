@@ -109,10 +109,10 @@ class Cuenta
             $todoOk = FALSE;
         }
 
-        if(!$todoOk)
-        {
-            return throw new Exception();
-        }
+        // if(!$todoOk)
+        // {
+        //     return throw new Exception();
+        // }
         return $todoOk;
         
     }

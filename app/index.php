@@ -11,6 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require_once './controllers/AjusteController.php';
 require_once './controllers/ConsultarController.php';
 require_once './controllers/CuentaController.php';
+require_once './controllers/ModificarController.php';
 require_once './controllers/DepositoController.php';
 require_once './controllers/AjusteController.php';
 require_once './controllers/RetiroController.php';
@@ -34,7 +35,7 @@ $app->group('/cuenta', function (RouteCollectorProxy $group)
     ->add(\ValidarMiddleware::class . ':validarParametrosCuenta');
     $group->post('/altaCuenta', CuentaController::class . ':AltaCuenta');
     $group->delete('/bajaCuenta', CuentaController::class . ':BajaCuenta');
-    // $group->put('/modificarProducto', CuentaController::class . ':ModificarProducto');
+    $group->put('/modificarCuenta', ModificarController::class . ':ModificarCuenta');
 });
 
 $app->group('/movimientos', function (RouteCollectorProxy $group)
@@ -54,6 +55,7 @@ $app->group('/consultas', function (RouteCollectorProxy $group)
     
 
 });
+
 
 
 

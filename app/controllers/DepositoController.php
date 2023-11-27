@@ -22,8 +22,10 @@ class DepositoController
         $deposito->idCuenta = $id;
         $deposito->tipoDeCuenta = $tipoDeCuenta;
         $deposito->importeDeposito = $saldoADepositar;
+        
 
         $deposito->crearDeposito();
+        
 
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $ultimoID = $objAccesoDatos->obtenerUltimoId();

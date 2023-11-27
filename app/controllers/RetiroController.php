@@ -23,12 +23,13 @@ class RetiroController
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json ');
         }
-
+        
         $retiro = new Retiro();
         $retiro->idCuenta = $id;
         $retiro->tipoDeCuenta = $tipoDeCuenta;
         $retiro->importeRetiro = $saldoARetirar;
-
+        
+        // var_dump("1");
         $retiro->crearRetiro();
 
         $saldoRestante = $saldoExistente - $saldoARetirar;

@@ -60,7 +60,7 @@ class ValidarMiddleware
                     $response = $handler->handle($request);    
                 }
             }
-
+            
             if(!$e)
             {
                 throw new Exception();
@@ -81,12 +81,12 @@ class ValidarMiddleware
 
         $importeADepositar = (float)$parametros['importeDepositar'];
         try{
-            if($importeADepositar > 0)
+            if($importeADepositar <= 0)
             {
-                $response = $handler->handle($request);
+                throw new Exception();
             }
             else{
-                throw new Exception();
+                $response = $handler->handle($request);
             }
         } catch(Exception $e){
             $response = new Response();
@@ -104,12 +104,12 @@ class ValidarMiddleware
         $importeARetirar = (float)$parametros['importeRetirar'];
         
         try{
-            if($importeARetirar > 0)
+            if($importeARetirar <= 0)
             {
-                $response = $handler->handle($request);
+                throw new Exception();
             }
             else{
-                throw new Exception();
+                $response = $handler->handle($request);
             }
         } catch(Exception $e){
             $response = new Response();

@@ -46,13 +46,19 @@ $app->group('/movimientos', function (RouteCollectorProxy $group)
     $group->post('/retirar', RetiroController::class . ':RetirarCuenta')
         ->add(\ValidarMiddleware::class . ':VerificarDatosRetiro');
 
+    $group->post('/ajusteDeposito', AjusteController::class . ':AjustarCuentaDeposito');
+    $group->post('/ajusteRetiro', AjusteController::class . ':AjustarCuentaRetiro');
 })->add(\ValidarMiddleware::class . ':VerificarCuenta');
 
 
 $app->group('/consultas', function (RouteCollectorProxy $group)
 {
     $group->post('/consultarCuenta', ConsultarController::class . ':ConsultarCuenta');
-    
+    $group->get('/consultaA', ConsultarController::class . ':ConsultarDepositadoPorFecha');
+    $group->get('/consultaB', ConsultarController::class . ':ConsultarDepositosUsuario');
+    $group->get('/consultaC', ConsultarController::class . ':ConsultarEntreDosFechas');
+    // $group->get('/consultaD', ConsultarController::class . ':ConsultarTipoDeCuenta');
+    // $group->get('/consultaE', ConsultarController::class . ':ConsultarMoneda');
 
 });
 

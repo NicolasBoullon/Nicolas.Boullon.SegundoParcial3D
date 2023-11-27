@@ -65,7 +65,14 @@ class Cuenta
         $consulta->execute();
     }
 
-
+    public static function AjustarCuentaDeposito($id,$monto)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE tabla_cuentas SET saldo = :saldo WHERE id = :id");
+        $consulta->bindValue(':saldo', $monto, PDO::PARAM_INT);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
 
     public static function ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,$saldo)
     {

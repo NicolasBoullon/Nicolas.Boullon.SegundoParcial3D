@@ -15,9 +15,8 @@ class ModificarController
         $tipoDeDocumento = $parametros->tipoDeDocumento;
         $numeroDeDocumento = $parametros->numeroDeDocumento;
         $email = $parametros->email;
-        $tipoDeCuenta = $parametros->tipoDeCuenta;
-
-        if(!Cuenta::ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,$tipoDeCuenta,1))
+        
+        if(!Cuenta::ValidarDatosDeCuenta($tipoDeDocumento,$numeroDeDocumento,$email,"CCU\$S",1))
         {
             $payload = json_encode(array('ERROR!' => "Los parametros ingresados son erroneos"));
             $response->getBody()->write($payload);

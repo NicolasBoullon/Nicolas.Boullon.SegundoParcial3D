@@ -110,7 +110,6 @@ class CuentaController{
                 return;
             }
         }
-        
         $nombreDeArchivo = "$id-$tipoDeCuenta.jpg";
         $rutaOrigen = "./ImagenesDeCuenta/2023/" . $nombreDeArchivo;
         $rutaDestino = "./ImagenesBackupCuentas/2023/" . $nombreDeArchivo;
@@ -124,21 +123,7 @@ class CuentaController{
         return $response->withHeader('Content-Type', 'application/json');
     }
     
-    // public function ModificarMesa($request,$response,$args)
-    // {
-    //     $parametros = $request->getBody();
-    //     $param = json_decode($parametros);
-    //     // var_dump($param);
-    //     $id = $param->id;
-    //     $estado = $param->estado;
-    //     $identificador = $param->identificador;
     
-    //     Mesa::modificarMesa($id,$estado,$identificador);
-    //     $payload = json_encode(array('Aviso!' => 'Se ha modificado la mesa'));
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
-
 
 
 }

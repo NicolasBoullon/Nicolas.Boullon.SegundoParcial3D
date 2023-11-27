@@ -46,6 +46,36 @@ class Consultar{
         return $consulta->fetchAll();
     }
 
+    public static function obtenerPorTipoDeCuenta($tipoDeCuenta)
+    {
+        $separado = str_split($tipoDeCuenta);
+        $junto = implode('', [$separado[0], $separado[1]]);
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM tabla_depositos WHERE tipoDeCuenta LIKE :filtro");
+        $consulta->bindValue(':filtro', $junto . '%', PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        // Devolver el resultado en formato JSON
+        return $consulta->fetchAll();
+    }
+
+    public static function obtenerPorTipoDeMoneda($tipoDeCuenta)
+    {
+        $separado = str_split($tipoDeCuenta);
+        $restante = implode('', array_slice($separado, 2));
+        // $junto = implode('', [$separado[2], $separado[1]]);
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM tabla_depositos WHERE tipoDeCuenta LIKE :filtro");
+        $consulta->bindValue(':filtro',  '%' . $restante, PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        // Devolver el resultado en formato JSON
+        return $consulta->fetchAll();
+    }
     public static function ObtenerDiaAnterior()
     {
         $date = date("d-m-y");
@@ -88,5 +118,100 @@ class Consultar{
         }
         $nuevoDate = date("$dia-$mes-$anio");
         return $nuevoDate;
+    }
+
+    //-------------------------------------------------------------------
+
+    public static function retiradoPorFecha($tipoDeCuenta, $fechaRetiro)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT SUM(importeRetiro) FROM tabla_retiros WHERE tipoDeCuenta = :tipoDeCuenta AND DATE(fechaRetiro) = :fechaRetiro");
+        $consulta->bindValue(':tipoDeCuenta', $tipoDeCuenta, PDO::PARAM_STR);
+        $consulta->bindValue(':fechaRetiro', $fechaRetiro, PDO::PARAM_STR);
+        $consulta->execute();
+    
+        return $consulta->fetchColumn();
+
+    }
+
+    public static function retiradoPorUsuario($dni)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT tabla_retiros.id,idCuenta,tabla_retiros.tipoDeCuenta,importeRetiro,fechaRetiro,tabla_cuentas.numeroDeDocumento FROM tabla_retiros JOIN tabla_cuentas ON tabla_cuentas.id = tabla_retiros.idCuenta WHERE tabla_cuentas.numeroDeDocumento = :numeroDeDocumento");
+        $consulta->bindValue(':numeroDeDocumento', $dni, PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+        // var_dump($consulta->fetchColumn());
+        return $consulta->fetchAll();
+    }
+
+    public static function retiradoPorDosFechas($fechaUno, $fechaDos)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT tabla_retiros.id, idCuenta, tabla_retiros.tipoDeCuenta, importeRetiro, fechaRetiro, tabla_cuentas.nombre FROM tabla_retiros JOIN tabla_cuentas ON tabla_cuentas.id = tabla_retiros.idCuenta WHERE fechaRetiro BETWEEN :fechaUno AND :fechaDos");
+        $consulta->bindValue(':fechaUno', $fechaUno, PDO::PARAM_STR);
+        $consulta->bindValue(':fechaDos', $fechaDos, PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+        return $consulta->fetchAll();
+    }
+
+    public static function obtenerPorTipoDeCuentaRetiro($tipoDeCuenta)
+    {
+        $separado = str_split($tipoDeCuenta);
+        $junto = implode('', [$separado[0], $separado[1]]);
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM tabla_retiros WHERE tipoDeCuenta LIKE :filtro");
+        $consulta->bindValue(':filtro', $junto . '%', PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        // Devolver el resultado en formato JSON
+        return $consulta->fetchAll();
+    }
+
+    public static function obtenerPorTipoDeMonedaRetiro($tipoDeCuenta)
+    {
+        $separado = str_split($tipoDeCuenta);
+        $restante = implode('', array_slice($separado, 2));
+        // $junto = implode('', [$separado[2], $separado[1]]);
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM tabla_retiros WHERE tipoDeCuenta LIKE :filtro");
+        $consulta->bindValue(':filtro',  '%' . $restante, PDO::PARAM_STR);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        // Devolver el resultado en formato JSON
+        return $consulta->fetchAll();
+    }
+
+    public static function obtenerRetirosDepositosPorUsuario($dni)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT tabla_retiros.importeRetiro, tabla_cuentas.tipoDeCuenta, tabla_cuentas.nombre
+        FROM tabla_retiros
+        JOIN tabla_cuentas ON tabla_retiros.idCuenta = tabla_cuentas.id
+        WHERE tabla_cuentas.numeroDeDocumento = :dni and tabla_cuentas.estado = 1;");
+        $consulta->bindValue(':dni', $dni, PDO::PARAM_INT);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        $listaRetiros = $consulta->fetchAll();
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT tabla_depositos.importeDeposito, tabla_cuentas.tipoDeCuenta, tabla_cuentas.nombre
+        FROM tabla_depositos
+        JOIN tabla_cuentas ON tabla_depositos.idCuenta = tabla_cuentas.id
+        WHERE tabla_cuentas.numeroDeDocumento = :dni and tabla_cuentas.estado = 1;");
+        $consulta->bindValue(':dni', $dni, PDO::PARAM_INT);
+        $consulta->setFetchMode(PDO::FETCH_ASSOC);
+        $consulta->execute();
+
+        $listaDepositos= $consulta->fetchAll();
+
+        $transacciones = [$listaRetiros, $listaDepositos];
+        return $transacciones;
     }
 }

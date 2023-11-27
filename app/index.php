@@ -50,16 +50,25 @@ $app->group('/movimientos', function (RouteCollectorProxy $group)
     $group->post('/ajusteRetiro', AjusteController::class . ':AjustarCuentaRetiro');
 })->add(\ValidarMiddleware::class . ':VerificarCuenta');
 
+$app->post('/consultarCuenta', ConsultarController::class . ':ConsultarCuenta');
 
-$app->group('/consultas', function (RouteCollectorProxy $group)
+$app->group('/consultasDepositos', function (RouteCollectorProxy $group)
 {
-    $group->post('/consultarCuenta', ConsultarController::class . ':ConsultarCuenta');
-    $group->get('/consultaA', ConsultarController::class . ':ConsultarDepositadoPorFecha');
+    $group->get('/consultaA', ConsultarController::class . ':ConsultarDepositadosPorFecha');
     $group->get('/consultaB', ConsultarController::class . ':ConsultarDepositosUsuario');
-    $group->get('/consultaC', ConsultarController::class . ':ConsultarEntreDosFechas');
-    // $group->get('/consultaD', ConsultarController::class . ':ConsultarTipoDeCuenta');
-    // $group->get('/consultaE', ConsultarController::class . ':ConsultarMoneda');
+    $group->get('/consultaC', ConsultarController::class . ':ConsultarDepositosEntreDosFechas');
+    $group->get('/consultaD', ConsultarController::class . ':ConsultarDepositosTipoDeCuenta');
+    $group->get('/consultaE', ConsultarController::class . ':ConsultarDepositosTipoDeMoneda');
+});
 
+$app->group('/consultasRetiro', function (RouteCollectorProxy $group)
+{
+    $group->get('/consultaA', ConsultarController::class . ':ConsultarRetirosPorFecha');
+    $group->get('/consultaB', ConsultarController::class . ':ConsultarRetirosUsuario');
+    $group->get('/consultaC', ConsultarController::class . ':ConsultarRetirosEntreDosFechas');
+    $group->get('/consultaD', ConsultarController::class . ':ConsultarRetirosTipoDeCuenta');
+    $group->get('/consultaE', ConsultarController::class . ':ConsultarRetirosTipoDeMoneda');
+    $group->get('/consultaF', ConsultarController::class . ':ConsultarDepositosyRetirosPorUsuario');
 });
 
 
